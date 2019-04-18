@@ -133,6 +133,20 @@ public class Uno {
         p.showCards();
     }
 
+    public void chooseWild(Player p) {
+        System.out.print("Enter a color for this wild card press 1 for Red, 2 for Yellow, 3 for Blue, and 4 for Green");
+        int color = choice.nextInt();
+        if (color == 1) {
+            p.PlayerCards().get(pick).setColor("Red");
+        } else if (color == 2) {
+            p.PlayerCards().get(pick).setColor("Yellow");
+        } else if (color == 3) {
+            p.PlayerCards().get(pick).setColor("Blue");
+        } else if (color == 4) {
+            p.PlayerCards().get(pick).setColor("Green");
+        }
+    }
+
     // checks to see if player has valud card in their hand
     public void checkHand(Player p) {
         if (!hasColor(p) && !hasValue(p)) {
@@ -159,18 +173,9 @@ public class Uno {
             System.out.println("Invalid pick. Please pick a valid card.");
             pick = choice.nextInt() - 1;
         }
+
         if (p.PlayerCards().get(pick).getColor().equalsIgnoreCase("wild")) {
-            System.out.print("Enter a color for this wild card press 1 for Red, 2 for Yellow, 3 for Blue, and 4 for Green");
-            int color = choice.nextInt();
-            if (color == 1) {
-                p.PlayerCards().get(pick).setColor("Red");
-            } else if (color == 2) {
-                p.PlayerCards().get(pick).setColor("Yellow");
-            } else if (color == 3) {
-                p.PlayerCards().get(pick).setColor("Blue");
-            } else if (color == 4) {
-                p.PlayerCards().get(pick).setColor("Green");
-            }
+            chooseWild(p);
         }
 
         if (p.PlayerCards().get(pick).getValue().equalsIgnoreCase("reverse")) {
@@ -200,15 +205,16 @@ public class Uno {
         //if last card played was +4 player draws 4 cards
         if (middleCard.getValue().equalsIgnoreCase("+4")) {
             penalty(p, 4);
-
-            //checks for valid card
-            checkHand(p);
-            //gets pick from player
-            pick = getPick(p);
-            Card play = p.throwCard(pick);
-            middleCard = play;
-            discardPile.add(middleCard);
         }
+
+        //checks for valid card
+        checkHand(p);
+        //gets pick from player
+        pick = getPick(p);
+        Card play = p.throwCard(pick);
+        middleCard = play;
+        discardPile.add(middleCard);
+
     }
 
     private boolean isValidChoice(Player p, int choice) { //checks if card selected matches card in middle
